@@ -2,10 +2,11 @@ import { Suspense } from "react";
 import MovieInfo, { getMovie } from "../../../../components/movie-info";
 import MovieVideos from "../../../../components/movie-videos";
 interface IParams {
-  params: { id: string };
+  id: string;
 }
 
-export async function generateMetadata({ params }: IParams) {
+export async function generateMetadata({ params }: { params: Promise<IParams> }) {
+
   const { id } = await params;
   const movie = await getMovie(id);
   return {
@@ -13,7 +14,8 @@ export async function generateMetadata({ params }: IParams) {
   };
 }
 
-export default async function MovieDetailPage({ params }: IParams) {
+export default async function MovieDetailPage({ params }: { params: Promise<IParams> }) {
+
   const { id } = await params;
   return (
     <div>
