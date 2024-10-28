@@ -1,8 +1,16 @@
 import { Suspense } from "react";
-import MovieInfo from "../../../../components/movie-info";
+import MovieInfo, { getMovie } from "../../../../components/movie-info";
 import MovieVideos from "../../../../components/movie-videos";
 
-export default async function MovieDetail({
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { id } = await params; // params 자체를 await하여 id에 접근
+  const movie = await getMovie(id)
+  return {
+    title: movie.title,
+  };
+}
+
+export default async function MovieDetailPage({
   params,
 }: {
   params: { id: string };
@@ -10,7 +18,6 @@ export default async function MovieDetail({
   const { id } = await params; // params 자체를 await하여 id에 접근
   return (
     <div>
-      <h3>Movie Detail Page</h3>
       <Suspense fallback={<h1>Loading movie info...</h1>}>
         <MovieInfo id={id} />
       </Suspense>
